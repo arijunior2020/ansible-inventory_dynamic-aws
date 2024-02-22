@@ -23,3 +23,4 @@ Inventário dinâmico simples através do ansible e ec2 utilizando o plugin aws_
    Além de listar os recursos disponíveis com o comando `ansible-inventory -i aws_ec2.yml --list`, você pode extrair informações detalhadas dos hosts. Por exemplo, utilizando o comando:
    
    ```ansible -i aws_ec2.yml all -m shell -a 'ps aux'```
+   ![ansible-inventory](ansible-inventory.png)

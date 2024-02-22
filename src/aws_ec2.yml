@@ -1,0 +1,55 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - sa-east-1
+aws_profile: default
+
+#
+# Option provides different settings to choose how the hostname will be displayed.
+#
+hostnames:
+  #- dns-name
+  #- ip-address
+  #- private-ip-address
+
+  #- name: 'private-ip-address'
+  #  separator: '_'
+  #  prefix: 'tag:Name'
+
+  - name: 'ip-address'
+    separator: '_'
+    prefix: 'tag:Name'
+
+#
+# creates and modifies host variables from Jinja2 expressions.
+#
+compose:
+ ansible_host: public_ip_address
+ ansible_user: "'ec2-user'"
+
+#
+# You can create dynamic groups using host variables with the keyed_groups option. 
+#
+keyed_groups:
+  - prefix: arch
+    key: architecture
+    value: 'x86_64'
+
+  - prefix: instance_type
+    key: instance_type
+
+  - key: 'security_groups|json_query("[].group_id")'
+    prefix: 'security_groups'
+
+# It is also possible to create groups using the groups option.
+groups:
+  PRD: "'PRD' in tags.Ambiente"
+  HML: "'HML' in tags.Ambiente"
+
+# Filters (Include and Exclude)
+filters:
+  tag:SO:
+    - 'amzn2'
+
+exclude_filters:
+- tag:Ambiente:
+  - 'HML' 
